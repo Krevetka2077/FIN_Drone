@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ФинДрон — Витрина услуг</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg-primary: #0a0e17;
+  --bg-secondary: #111827;
+  --bg-card: #151d2e;
+  --bg-card-hover: #1a2438;
+  --bg-elevated: #1e293b;
+  --border: #1e2d44;
+  --border-active: #0d7c66;
+  --text-primary: #e8edf5;
+  --text-secondary: #8194a8;
+  --text-muted: #4a5c72;
+  --accent: #0d7c66;
+  --accent-bright: #12a387;
+  --accent-glow: rgba(13, 124, 102, 0.25);
+  --green: #22c55e;
+  --green-dim: rgba(34, 197, 94, 0.15);
+  --orange: #f59e0b;
+  --red: #ef4444;
+  --blue: #3b82f6;
+  --cyan: #06b6d4;
+  --purple: #8b5cf6;
+  --font-display: 'Outfit', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --radius: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-display);
+  line-height: 1.6;
+}
+
+/* ═══════ NAVBAR ═══════ */
+.navbar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(10, 14, 23, 0.92);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 40px; height: 56px;
+}
+.nav-logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 15px; color: var(--accent-bright); letter-spacing: 0.5px; }
+.nav-logo svg { width: 24px; height: 24px; }
+.nav-links { display: flex; gap: 6px; }
+.nav-link {
+  padding: 6px 16px; font-size: 13px; font-weight: 500; color: var(--text-muted);
+  border-radius: 6px; cursor: pointer; transition: all 0.2s; text-decoration: none; border: 1px solid transparent;
+}
+.nav-link:hover { color: var(--text-secondary); background: var(--bg-card); }
+.nav-link.active { color: var(--text-primary); background: var(--bg-card); border-color: var(--border-active); }
+.nav-cta {
+  padding: 8px 20px; font-size: 13px; font-weight: 600; color: white;
+  background: linear-gradient(135deg, var(--accent), var(--accent-bright));
+  border-radius: 8px; cursor: pointer; border: none; transition: all 0.3s;
+}
+.nav-cta:hover { transform: translateY(-1px); box-shadow: 0 4px 20px var(--accent-glow); }
+
+/* ═══════ HERO ═══════ */
+.hero {
+  padding: 140px 40px 80px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+  background: radial-gradient(ellipse at 50% 0%, rgba(13, 124, 102, 0.12) 0%, transparent 60%),
+              radial-gradient(ellipse at 20% 80%, rgba(59, 130, 246, 0.05) 0%, transparent 40%);
+  pointer-events: none;
+}
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 6px 16px; border-radius: 20px; font-size: 12px; font-weight: 500;
+  background: var(--accent-glow); color: var(--accent-bright); border: 1px solid rgba(13, 124, 102, 0.3);
+  margin-bottom: 24px; position: relative;
+}
+.hero-badge .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: blink 2s infinite; }
+.hero h1 {
+  font-size: 52px; font-weight: 800; line-height: 1.1; letter-spacing: -1px;
+  background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-bright) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  margin-bottom: 16px; position: relative;
+}
+.hero p { font-size: 18px; color: var(--text-secondary); max-width: 600px; margin: 0 auto 40px; position: relative; }
+.hero-stats {
+  display: flex; justify-content: center; gap: 48px; position: relative;
+}
+.hero-stat { text-align: center; }
+.hero-stat-value { font-family: var(--font-mono); font-size: 32px; font-weight: 700; color: var(--accent-bright); }
+.hero-stat-label { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+/* ═══════ SECTIONS ═══════ */
+.section { padding: 80px 40px; max-width: 1200px; margin: 0 auto; }
+.section-label {
+  font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px;
+  color: var(--accent-bright); margin-bottom: 12px;
+}
+.section-title { font-size: 36px; font-weight: 700; margin-bottom: 8px; }
+.section-desc { font-size: 16px; color: var(--text-secondary); margin-bottom: 48px; max-width: 640px; }
+
+/* ═══════ MODULES GRID ═══════ */
+.modules-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.module-card {
+  background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg);
+  padding: 28px; cursor: pointer; transition: all 0.3s; position: relative; overflow: hidden;
+}
+.module-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-bright));
+  opacity: 0; transition: opacity 0.3s;
+}
+.module-card:hover { background: var(--bg-card-hover); border-color: var(--accent); transform: translateY(-2px); }
+.module-card:hover::before { opacity: 1; }
+.module-card.selected { border-color: var(--accent-bright); background: var(--bg-card-hover); }
+.module-card.selected::before { opacity: 1; }
+.module-icon { font-size: 28px; margin-bottom: 14px; display: block; }
+.module-name { font-size: 16px; font-weight: 600; margin-bottom: 6px; }
+.module-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 14px; }
+.module-price {
+  font-family: var(--font-mono); font-size: 14px; font-weight: 600; color: var(--accent-bright);
+  display: flex; align-items: baseline; gap: 4px;
+}
+.module-price .unit { font-size: 11px; color: var(--text-muted); font-weight: 400; }
+.module-check {
+  position: absolute; top: 14px; right: 14px; width: 22px; height: 22px;
+  border-radius: 6px; border: 2px solid var(--border); display: flex; align-items: center; justify-content: center;
+  font-size: 12px; transition: all 0.2s;
+}
+.module-card.selected .module-check { background: var(--accent-bright); border-color: var(--accent-bright); color: white; }
+
+/* ═══════ ADD-ONS ═══════ */
+.addons-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 32px; }
+.addon-row {
+  display: flex; align-items: center; justify-content: space-between;
+  background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 16px 20px; transition: all 0.2s;
+}
+.addon-row:hover { border-color: var(--border-active); }
+.addon-left { display: flex; align-items: center; gap: 12px; }
+.addon-icon { font-size: 20px; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; background: var(--bg-elevated); border-radius: 8px; }
+.addon-name { font-size: 14px; font-weight: 500; }
+.addon-desc { font-size: 11px; color: var(--text-muted); }
+.addon-price { font-family: var(--font-mono); font-size: 14px; color: var(--accent-bright); font-weight: 600; text-align: right; }
+.addon-unit { font-size: 10px; color: var(--text-muted); font-weight: 400; }
+
+/* ═══════ PRICING ═══════ */
+.pricing-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.pricing-card {
+  background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-xl);
+  padding: 32px 24px; position: relative; transition: all 0.3s; display: flex; flex-direction: column;
+}
+.pricing-card:hover { transform: translateY(-4px); border-color: var(--accent); }
+.pricing-card.featured {
+  background: linear-gradient(135deg, rgba(13, 124, 102, 0.15), rgba(18, 163, 135, 0.08));
+  border-color: var(--accent-bright);
+}
+.pricing-card.featured::after {
+  content: 'ПОПУЛЯРНЫЙ'; position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
+  background: linear-gradient(135deg, var(--accent), var(--accent-bright)); color: white;
+  font-size: 10px; font-weight: 700; letter-spacing: 1px; padding: 4px 14px; border-radius: 10px;
+}
+.pricing-card.enterprise {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(59, 130, 246, 0.08));
+  border-color: var(--purple);
+}
+.pricing-card.enterprise::after {
+  content: 'БЕЗЛИМИТ'; position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
+  background: linear-gradient(135deg, var(--purple), var(--blue)); color: white;
+  font-size: 10px; font-weight: 700; letter-spacing: 1px; padding: 4px 14px; border-radius: 10px;
+}
+.pricing-name { font-size: 18px; font-weight: 600; margin-bottom: 8px; }
+.pricing-price { font-family: var(--font-mono); font-size: 36px; font-weight: 700; color: var(--accent-bright); margin-bottom: 4px; }
+.pricing-card.enterprise .pricing-price { color: var(--purple); }
+.pricing-period { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+.pricing-divider { height: 1px; background: var(--border); margin-bottom: 20px; }
+.pricing-features { list-style: none; flex: 1; }
+.pricing-features li {
+  font-size: 13px; color: var(--text-secondary); padding: 6px 0;
+  display: flex; align-items: center; gap: 8px;
+}
+.pricing-features li .check { color: var(--green); font-size: 14px; flex-shrink: 0; }
+.pricing-features li .dash { color: var(--text-muted); font-size: 14px; flex-shrink: 0; }
+.pricing-features li.highlight { color: var(--text-primary); font-weight: 500; }
+.pricing-btn {
+  margin-top: 24px; width: 100%; padding: 12px; border-radius: 10px; font-size: 14px; font-weight: 600;
+  cursor: pointer; transition: all 0.3s; border: none; font-family: var(--font-display);
+}
+.pricing-btn.primary {
+  background: linear-gradient(135deg, var(--accent), var(--accent-bright)); color: white;
+}
+.pricing-btn.primary:hover { box-shadow: 0 4px 20px var(--accent-glow); transform: translateY(-1px); }
+.pricing-btn.outline {
+  background: transparent; color: var(--text-primary); border: 1px solid var(--border);
+}
+.pricing-btn.outline:hover { border-color: var(--accent); color: var(--accent-bright); }
+.pricing-btn.purple {
+  background: linear-gradient(135deg, var(--purple), var(--blue)); color: white;
+}
+.pricing-btn.purple:hover { box-shadow: 0 4px 20px rgba(139, 92, 246, 0.3); }
+
+.pricing-note {
+  text-align: center; margin-top: 32px; padding: 16px 24px;
+  background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius);
+  font-size: 14px; color: var(--text-secondary);
+}
+.pricing-note strong { color: var(--accent-bright); }
+
+/* ═══════ CALCULATOR ═══════ */
+.calc-container {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 32px;
+}
+.calc-panel {
+  background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-xl);
+  padding: 32px;
+}
+.calc-panel h3 { font-size: 18px; font-weight: 600; margin-bottom: 24px; }
+
+.calc-field { margin-bottom: 20px; }
+.calc-label { font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+.calc-input-wrap { position: relative; }
+.calc-input {
+  width: 100%; padding: 12px 16px; background: var(--bg-primary); border: 1px solid var(--border);
+  border-radius: var(--radius); color: var(--text-primary); font-family: var(--font-mono);
+  font-size: 16px; font-weight: 600; outline: none; transition: border-color 0.2s;
+}
+.calc-input:focus { border-color: var(--accent-bright); }
+.calc-suffix {
+  position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+  font-size: 12px; color: var(--text-muted);
+}
+.calc-select {
+  width: 100%; padding: 12px 16px; background: var(--bg-primary); border: 1px solid var(--border);
+  border-radius: var(--radius); color: var(--text-primary); font-family: var(--font-display);
+  font-size: 14px; outline: none; cursor: pointer; appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%238194a8' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 14px center;
+}
+.calc-select:focus { border-color: var(--accent-bright); }
+
+.calc-toggle { display: flex; gap: 4px; background: var(--bg-primary); border-radius: var(--radius); padding: 4px; }
+.calc-toggle-btn {
+  flex: 1; padding: 8px 12px; font-size: 13px; font-weight: 500; text-align: center;
+  border-radius: 6px; cursor: pointer; transition: all 0.2s; color: var(--text-muted); border: none; background: none;
+  font-family: var(--font-display);
+}
+.calc-toggle-btn.active { background: var(--accent); color: white; }
+
+.calc-checkbox-row {
+  display: flex; align-items: center; gap: 10px; padding: 10px 0;
+  font-size: 14px; cursor: pointer; color: var(--text-secondary);
+}
+.calc-checkbox-row:hover { color: var(--text-primary); }
+.calc-checkbox {
+  width: 18px; height: 18px; border: 2px solid var(--border); border-radius: 4px;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.2s;
+  font-size: 11px; color: transparent; cursor: pointer;
+}
+.calc-checkbox.checked { background: var(--accent-bright); border-color: var(--accent-bright); color: white; }
+
+/* Result panel */
+.calc-result {
+  background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-xl);
+  padding: 32px;
+}
+.result-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 0; border-bottom: 1px solid rgba(30, 45, 68, 0.5);
+  font-size: 14px;
+}
+.result-row:last-child { border-bottom: none; }
+.result-row .label { color: var(--text-secondary); }
+.result-row .value { font-family: var(--font-mono); font-weight: 600; color: var(--text-primary); }
+.result-row.discount .value { color: var(--green); }
+.result-row.total {
+  border-top: 2px solid var(--accent); border-bottom: none; padding-top: 16px; margin-top: 8px;
+}
+.result-row.total .label { font-size: 16px; font-weight: 600; color: var(--text-primary); }
+.result-row.total .value { font-size: 24px; color: var(--accent-bright); }
+
+.result-per-drone {
+  margin-top: 16px; padding: 14px; background: var(--accent-glow); border-radius: var(--radius);
+  text-align: center;
+}
+.result-per-drone .big { font-family: var(--font-mono); font-size: 28px; font-weight: 700; color: var(--accent-bright); }
+.result-per-drone .sub { font-size: 12px; color: var(--text-secondary); margin-top: 4px; }
+
+.result-savings {
+  margin-top: 12px; padding: 12px; background: var(--green-dim); border-radius: var(--radius);
+  text-align: center; font-size: 13px; color: var(--green); font-weight: 500;
+}
+
+/* ═══════ CTA ═══════ */
+.cta-section {
+  text-align: center; padding: 100px 40px;
+  background: linear-gradient(180deg, var(--bg-primary), rgba(13, 124, 102, 0.08));
+}
+.cta-section h2 { font-size: 36px; font-weight: 700; margin-bottom: 12px; }
+.cta-section p { font-size: 16px; color: var(--text-secondary); margin-bottom: 32px; }
+.cta-buttons { display: flex; justify-content: center; gap: 16px; }
+.cta-btn {
+  padding: 14px 32px; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer;
+  transition: all 0.3s; font-family: var(--font-display); text-decoration: none;
+}
+.cta-btn.primary { background: linear-gradient(135deg, var(--accent), var(--accent-bright)); color: white; border: none; }
+.cta-btn.primary:hover { box-shadow: 0 6px 30px var(--accent-glow); transform: translateY(-2px); }
+.cta-btn.ghost { background: none; color: var(--text-primary); border: 1px solid var(--border); }
+.cta-btn.ghost:hover { border-color: var(--accent); color: var(--accent-bright); }
+
+.footer {
+  padding: 32px 40px; border-top: 1px solid var(--border);
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 13px; color: var(--text-muted);
+}
+.footer a { color: var(--accent-bright); text-decoration: none; }
+
+/* ═══════ ANIMATIONS ═══════ */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.module-card, .pricing-card, .addon-row { animation: fadeUp 0.5s ease both; }
+.module-card:nth-child(1),.pricing-card:nth-child(1) { animation-delay: 0.05s; }
+.module-card:nth-child(2),.pricing-card:nth-child(2) { animation-delay: 0.1s; }
+.module-card:nth-child(3),.pricing-card:nth-child(3) { animation-delay: 0.15s; }
+.module-card:nth-child(4),.pricing-card:nth-child(4) { animation-delay: 0.2s; }
+.module-card:nth-child(5) { animation-delay: 0.25s; }
+.module-card:nth-child(6) { animation-delay: 0.3s; }
+
+/* ═══════ RESPONSIVE ═══════ */
+@media (max-width: 1024px) {
+  .pricing-grid { grid-template-columns: repeat(2, 1fr); }
+  .modules-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 768px) {
+  .pricing-grid, .modules-grid, .calc-container { grid-template-columns: 1fr; }
+  .addons-grid { grid-template-columns: 1fr; }
+  .hero h1 { font-size: 32px; }
+  .hero-stats { flex-wrap: wrap; gap: 24px; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="nav-logo">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+    ФИНДРОН
+  </div>
+  <div class="nav-links">
+    <a class="nav-link" href="#modules">Модули</a>
+    <a class="nav-link active" href="#pricing">Тарифы</a>
+    <a class="nav-link" href="#calc">Калькулятор</a>
+    <a class="nav-link" href="#addons">Допуслуги</a>
+  </div>
+  <button class="nav-cta" onclick="document.getElementById('calc').scrollIntoView({behavior:'smooth'})">Рассчитать стоимость</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge"><span class="dot"></span> Прайс-лист актуален с 01.01.2026</div>
+  <h1>Витрина услуг<br>ФинДрон HUB</h1>
+  <p>Модульная платформа управления беспилотными системами. Выберите нужные модули или готовый тарифный план.</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="hero-stat-value">6</div><div class="hero-stat-label">модулей платформы</div></div>
+    <div class="hero-stat"><div class="hero-stat-value">4</div><div class="hero-stat-label">тарифных плана</div></div>
+    <div class="hero-stat"><div class="hero-stat-value">от 480₽</div><div class="hero-stat-label">за борт / месяц</div></div>
+    <div class="hero-stat"><div class="hero-stat-value">24/7</div><div class="hero-stat-label">техподдержка</div></div>
+  </div>
+</section>
+
+<!-- MODULES -->
+<section class="section" id="modules">
+  <div class="section-label">Платформа</div>
+  <div class="section-title">Модули ФинДрон HUB</div>
+  <div class="section-desc">Каждый модуль можно подключить отдельно или в составе тарифного плана. Нажмите на модуль, чтобы добавить в расчёт.</div>
+  <div class="modules-grid" id="modulesGrid"></div>
+</section>
+
+<!-- PRICING -->
+<section class="section" id="pricing">
+  <div class="section-label">Тарифы</div>
+  <div class="section-title">Тарифные планы</div>
+  <div class="section-desc">Подписка за борт/месяц. Enterprise — фиксированная цена от 500 бортов.</div>
+  <div class="pricing-grid">
+
+    <div class="pricing-card">
+      <div class="pricing-name">Старт</div>
+      <div class="pricing-price">480₽</div>
+      <div class="pricing-period">за борт / месяц</div>
+      <div class="pricing-divider"></div>
+      <ul class="pricing-features">
+        <li class="highlight"><span class="check">✓</span> до 10 бортов</li>
+        <li><span class="check">✓</span> 3 модуля на выбор</li>
+        <li><span class="check">✓</span> Телеметрия 1 раз/сек</li>
+        <li><span class="check">✓</span> История 1 год</li>
+        <li><span class="check">✓</span> API: REST</li>
+        <li><span class="check">✓</span> Поддержка 8/5</li>
+        <li><span class="check">✓</span> SLA 99.5%</li>
+        <li><span class="dash">—</span> Интеграции</li>
+        <li><span class="dash">—</span> Обучение</li>
+        <li><span class="dash">—</span> White-label</li>
+      </ul>
+      <button class="pricing-btn outline" onclick="setTariff('start')">Выбрать</button>
+    </div>
+
+    <div class="pricing-card featured">
+      <div class="pricing-name">Бизнес</div>
+      <div class="pricing-price">890₽</div>
+      <div class="pricing-period">за борт / месяц</div>
+      <div class="pricing-divider"></div>
+      <ul class="pricing-features">
+        <li class="highlight"><span class="check">✓</span> до 100 бортов</li>
+        <li><span class="check">✓</span> 5 модулей на выбор</li>
+        <li><span class="check">✓</span> Телеметрия 2 раз/сек</li>
+        <li><span class="check">✓</span> История 3 года</li>
+        <li><span class="check">✓</span> API: REST + MQTT</li>
+        <li><span class="check">✓</span> Поддержка 12/7</li>
+        <li><span class="check">✓</span> SLA 99.7%</li>
+        <li><span class="check">✓</span> 1 интеграция</li>
+        <li><span class="check">✓</span> Обучение 5 чел.</li>
+        <li><span class="dash">—</span> White-label</li>
+      </ul>
+      <button class="pricing-btn primary" onclick="setTariff('business')">Выбрать</button>
+    </div>
+
+    <div class="pricing-card">
+      <div class="pricing-name">Премиум</div>
+      <div class="pricing-price">1 490₽</div>
+      <div class="pricing-period">за борт / месяц</div>
+      <div class="pricing-divider"></div>
+      <ul class="pricing-features">
+        <li class="highlight"><span class="check">✓</span> до 499 бортов</li>
+        <li><span class="check">✓</span> Все 6 модулей</li>
+        <li><span class="check">✓</span> Телеметрия real-time</li>
+        <li><span class="check">✓</span> История 5 лет</li>
+        <li><span class="check">✓</span> REST + MQTT + WS</li>
+        <li><span class="check">✓</span> Поддержка 24/7</li>
+        <li><span class="check">✓</span> SLA 99.9%</li>
+        <li><span class="check">✓</span> 3 интеграции</li>
+        <li><span class="check">✓</span> Обучение без огр.</li>
+        <li><span class="check">✓</span> White-label опция</li>
+      </ul>
+      <button class="pricing-btn outline" onclick="setTariff('premium')">Выбрать</button>
+    </div>
+
+    <div class="pricing-card enterprise">
+      <div class="pricing-name">Enterprise</div>
+      <div class="pricing-price">490 000₽</div>
+      <div class="pricing-period">фикс. / месяц</div>
+      <div class="pricing-divider"></div>
+      <ul class="pricing-features">
+        <li class="highlight"><span class="check">✓</span> от 500 бортов, без лимита</li>
+        <li><span class="check">✓</span> 6 + кастом модули</li>
+        <li><span class="check">✓</span> Телеметрия real-time</li>
+        <li><span class="check">✓</span> История бессрочно</li>
+        <li><span class="check">✓</span> Любой API + SDK</li>
+        <li><span class="check">✓</span> 24/7 + TAM-менеджер</li>
+        <li><span class="check">✓</span> SLA 99.95%</li>
+        <li><span class="check">✓</span> Интеграции без огр.</li>
+        <li><span class="check">✓</span> Обучение + сертификация</li>
+        <li><span class="check">✓</span> Выделенная инфраструктура</li>
+      </ul>
+      <button class="pricing-btn purple" onclick="setTariff('enterprise')">Запросить</button>
+    </div>
+  </div>
+  <div class="pricing-note">При оплате за год — <strong>скидка 20%</strong>. Enterprise: фиксированная цена 490 000 ₽/мес. независимо от количества бортов. Все цены с НДС.</div>
+</section>
+
+<!-- ADDONS -->
+<section class="section" id="addons">
+  <div class="section-label">Дополнительно</div>
+  <div class="section-title">Дополнительные услуги</div>
+  <div class="section-desc">Разовые и ежемесячные услуги для расширения возможностей платформы.</div>
+  <div class="addons-grid" id="addonsGrid"></div>
+</section>
+
+<!-- CALCULATOR -->
+<section class="section" id="calc">
+  <div class="section-label">Калькулятор</div>
+  <div class="section-title">Рассчитайте стоимость</div>
+  <div class="section-desc">Настройте параметры — стоимость рассчитается автоматически.</div>
+  <div class="calc-container">
+    <div class="calc-panel">
+      <h3>⚙️ Параметры проекта</h3>
+
+      <div class="calc-field">
+        <div class="calc-label">Тариф</div>
+        <select class="calc-select" id="calcTariff" onchange="calculate()">
+          <option value="start">Старт — 480 ₽/борт/мес.</option>
+          <option value="business" selected>Бизнес — 890 ₽/борт/мес.</option>
+          <option value="premium">Премиум — 1 490 ₽/борт/мес.</option>
+          <option value="enterprise">Enterprise — 490 000 ₽/мес. фикс.</option>
+        </select>
+      </div>
+
+      <div class="calc-field">
+        <div class="calc-label">Количество бортов</div>
+        <div class="calc-input-wrap">
+          <input type="number" class="calc-input" id="calcDrones" value="50" min="1" max="5000" onchange="calculate()" oninput="calculate()">
+          <span class="calc-suffix">бортов</span>
+        </div>
+      </div>
+
+      <div class="calc-field">
+        <div class="calc-label">Период оплаты</div>
+        <div class="calc-toggle">
+          <button class="calc-toggle-btn" onclick="setPeriod('month')" id="btnMonth">Помесячно</button>
+          <button class="calc-toggle-btn active" onclick="setPeriod('year')" id="btnYear">За год (−20%)</button>
+        </div>
+      </div>
+
+      <div class="calc-field">
+        <div class="calc-label">Дополнительные услуги</div>
+        <div class="calc-checkbox-row" onclick="toggleCalcAddon(this, 'integrations')">
+          <div class="calc-checkbox" id="chkInt">✓</div>
+          <div><div class="addon-name">Интеграция с ERP/SCADA</div><div class="addon-desc">380 000 ₽ за 1 систему</div></div>
+        </div>
+        <div class="calc-checkbox-row" onclick="toggleCalcAddon(this, 'training')">
+          <div class="calc-checkbox" id="chkTrain">✓</div>
+          <div><div class="addon-name">Обучение персонала</div><div class="addon-desc">18 000 ₽ × кол-во человек</div></div>
+        </div>
+        <div class="calc-checkbox-row" onclick="toggleCalcAddon(this, 'adapter')">
+          <div class="calc-checkbox" id="chkAdapt">✓</div>
+          <div><div class="addon-name">Адаптер для БАС</div><div class="addon-desc">180 000 ₽ за 1 тип</div></div>
+        </div>
+        <div class="calc-checkbox-row" onclick="toggleCalcAddon(this, 'pilot')">
+          <div class="calc-checkbox" id="chkPilot">✓</div>
+          <div><div class="addon-name">Пилотный запуск</div><div class="addon-desc">320 000 ₽ (1 площадка)</div></div>
+        </div>
+        <div class="calc-checkbox-row" onclick="toggleCalcAddon(this, 'support')">
+          <div class="calc-checkbox" id="chkSupport">✓</div>
+          <div><div class="addon-name">Техподдержка 24/7</div><div class="addon-desc">45 000 ₽/мес.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="calc-result">
+      <h3>📊 Расчёт стоимости</h3>
+      <div id="calcResults"></div>
+      <div class="result-per-drone" id="calcPerDrone"></div>
+      <div class="result-savings" id="calcSavings" style="display:none"></div>
+      <button class="pricing-btn primary" style="margin-top:20px" onclick="alert('Расчёт отправлен на info@findron.ru')">📩 Отправить расчёт</button>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <h2>Готовы начать?</h2>
+  <p>Напишите нам — подберём оптимальный тариф и рассчитаем стоимость под ваш парк</p>
+  <div class="cta-buttons">
+    <a class="cta-btn primary" href="mailto:info@findron.ru">📩 info@findron.ru</a>
+    <a class="cta-btn ghost" href="https://t.me/egorcoold">💬 Telegram @egorcoold</a>
+  </div>
+</section>
+
+<footer class="footer">
+  <div>© 2026 ФинДрон. Все права защищены.</div>
+  <div><a href="tel:+79951538350">+7 (995) 153-83-50</a> &nbsp;|&nbsp; <a href="https://findron.ru">findron.ru</a></div>
+</footer>
+
+<script>
+// ═══════ DATA ═══════
+const modules = [
+  { id: 'm1', icon: '🛩️', name: 'Управление полётами', desc: 'Планирование маршрутов, координация флота, управление миссиями, ФГИС ИВП', price: 580000, unit: 'год' },
+  { id: 'm2', icon: '📡', name: 'Мониторинг и телеметрия', desc: 'Онлайн-телеметрия, дашборды, алерты, история полётов до 5 лет', price: 520000, unit: 'год' },
+  { id: 'm3', icon: '🔄', name: 'Нормализация данных', desc: 'Единый формат для разных БАС, API-шлюз, ETL, REST/MQTT/MAVLink', price: 480000, unit: 'год' },
+  { id: 'm4', icon: '🛡️', name: 'Отказоустойчивость', desc: 'Резервирование каналов (4G+спутник+радио), автономные сценарии, 2 ЦОД', price: 640000, unit: 'год' },
+  { id: 'm5', icon: '📊', name: 'Аналитика и отчётность', desc: 'KPI флота, прогноз ТО, отчёты для регулятора, выгрузка Excel/PDF', price: 420000, unit: 'год' },
+  { id: 'm6', icon: '🔐', name: 'Безопасность и комплаенс', desc: 'ФАП, шифрование, разграничение доступа, журналирование, ФГИС ИВП', price: 380000, unit: 'год' },
+];
+
+const addons = [
+  { icon: '🔧', name: 'Интеграция с ERP/SCADA', desc: 'Подключение к корпоративным системам', price: '380 000 ₽', unit: 'за 1 систему' },
+  { icon: '🎓', name: 'Обучение персонала', desc: 'Онлайн или очное обучение операторов', price: '18 000 ₽', unit: 'за 1 чел.' },
+  { icon: '🔌', name: 'Адаптер для БАС', desc: 'Коннектор для нестандартного оборудования', price: '180 000 ₽', unit: 'за 1 тип' },
+  { icon: '🚀', name: 'Пилотный запуск', desc: 'Развёртывание на 1 площадке, тестирование', price: '320 000 ₽', unit: 'фикс.' },
+  { icon: '📞', name: 'Техподдержка 24/7', desc: 'SLA 99.9%, выделенный менеджер, обновления', price: '45 000 ₽', unit: 'мес./проект' },
+  { icon: '🏷️', name: 'White-label', desc: 'Брендирование под логотип и стиль клиента', price: '380 000 ₽', unit: 'фикс.' },
+];
+
+const tariffs = {
+  start: { price: 480, maxDrones: 10, label: 'Старт' },
+  business: { price: 890, maxDrones: 100, label: 'Бизнес' },
+  premium: { price: 1490, maxDrones: 499, label: 'Премиум' },
+  enterprise: { price: 490000, maxDrones: 99999, fixed: true, label: 'Enterprise' },
+};
+
+// ═══════ RENDER MODULES ═══════
+function renderModules() {
+  const grid = document.getElementById('modulesGrid');
+  grid.innerHTML = modules.map(m => `
+    <div class="module-card" id="card-${m.id}" onclick="toggleModule('${m.id}')">
+      <div class="module-check" id="check-${m.id}">✓</div>
+      <span class="module-icon">${m.icon}</span>
+      <div class="module-name">${m.name}</div>
+      <div class="module-desc">${m.desc}</div>
+      <div class="module-price">${(m.price).toLocaleString('ru-RU')} ₽ <span class="unit">/ ${m.unit}</span></div>
+    </div>
+  `).join('');
+}
+
+function toggleModule(id) {
+  const card = document.getElementById('card-' + id);
+  card.classList.toggle('selected');
+}
+
+// ═══════ RENDER ADDONS ═══════
+function renderAddons() {
+  const grid = document.getElementById('addonsGrid');
+  grid.innerHTML = addons.map(a => `
+    <div class="addon-row">
+      <div class="addon-left">
+        <div class="addon-icon">${a.icon}</div>
+        <div><div class="addon-name">${a.name}</div><div class="addon-desc">${a.desc}</div></div>
+      </div>
+      <div><div class="addon-price">${a.price}</div><div class="addon-unit">${a.unit}</div></div>
+    </div>
+  `).join('');
+}
+
+// ═══════ CALCULATOR ═══════
+let calcPeriod = 'year';
+let calcAddons = {};
+
+function setPeriod(p) {
+  calcPeriod = p;
+  document.getElementById('btnMonth').classList.toggle('active', p === 'month');
+  document.getElementById('btnYear').classList.toggle('active', p === 'year');
+  calculate();
+}
+
+function toggleCalcAddon(el, key) {
+  const chk = el.querySelector('.calc-checkbox');
+  calcAddons[key] = !calcAddons[key];
+  chk.classList.toggle('checked', calcAddons[key]);
+  calculate();
+}
+
+function setTariff(t) {
+  document.getElementById('calcTariff').value = t;
+  const drones = document.getElementById('calcDrones');
+  if (t === 'start') drones.value = 10;
+  else if (t === 'business') drones.value = 50;
+  else if (t === 'premium') drones.value = 200;
+  else if (t === 'enterprise') drones.value = 750;
+  document.getElementById('calc').scrollIntoView({ behavior: 'smooth' });
+  calculate();
+}
+
+function fmt(n) { return n.toLocaleString('ru-RU'); }
+
+function calculate() {
+  const tariffKey = document.getElementById('calcTariff').value;
+  const tariff = tariffs[tariffKey];
+  const drones = Math.max(1, parseInt(document.getElementById('calcDrones').value) || 1);
+  const months = calcPeriod === 'year' ? 12 : 1;
+  const yearDiscount = calcPeriod === 'year' ? 0.2 : 0;
+
+  let rows = [];
+  let total = 0;
+
+  // Subscription
+  if (tariff.fixed) {
+    const sub = tariff.price * months;
+    rows.push({ label: `Подписка «${tariff.label}» (${months} мес.)`, value: sub });
+    total += sub;
+  } else {
+    const sub = tariff.price * drones * months;
+    rows.push({ label: `Подписка «${tariff.label}» (${drones} × ${fmt(tariff.price)}₽ × ${months} мес.)`, value: sub });
+    total += sub;
+  }
+
+  // Year discount
+  if (yearDiscount > 0) {
+    const disc = -Math.round(total * yearDiscount);
+    rows.push({ label: `Скидка за годовую оплату (−${yearDiscount*100}%)`, value: disc, discount: true });
+    total += disc;
+  }
+
+  // Addons
+  if (calcAddons.integrations) {
+    rows.push({ label: 'Интеграция с ERP/SCADA (1 система)', value: 380000 });
+    total += 380000;
+  }
+  if (calcAddons.training) {
+    const people = Math.max(3, Math.ceil(drones / 5));
+    const cost = people * 18000;
+    rows.push({ label: `Обучение (${people} чел. × 18 000₽)`, value: cost });
+    total += cost;
+  }
+  if (calcAddons.adapter) {
+    const types = drones <= 20 ? 1 : drones <= 100 ? 2 : 3;
+    const cost = types * 180000;
+    rows.push({ label: `Адаптеры для БАС (${types} тип.)`, value: cost });
+    total += cost;
+  }
+  if (calcAddons.pilot) {
+    rows.push({ label: 'Пилотный запуск (1 площадка)', value: 320000 });
+    total += 320000;
+  }
+  if (calcAddons.support) {
+    const cost = 45000 * months;
+    rows.push({ label: `Техподдержка 24/7 (${months} мес.)`, value: cost });
+    total += cost;
+  }
+
+  // Render
+  const container = document.getElementById('calcResults');
+  container.innerHTML = rows.map(r => `
+    <div class="result-row ${r.discount ? 'discount' : ''}">
+      <span class="label">${r.label}</span>
+      <span class="value">${r.discount ? '' : ''}${fmt(r.value)} ₽</span>
+    </div>
+  `).join('') + `
+    <div class="result-row total">
+      <span class="label">ИТОГО за ${calcPeriod === 'year' ? 'год' : 'месяц'}:</span>
+      <span class="value">${fmt(total)} ₽</span>
+    </div>
+  `;
+
+  // Per drone
+  const perDroneMonth = Math.round(total / drones / (calcPeriod === 'year' ? 12 : 1));
+  document.getElementById('calcPerDrone').innerHTML = `
+    <div class="big">${fmt(perDroneMonth)} ₽</div>
+    <div class="sub">стоимость на 1 борт в месяц (с учётом всех услуг)</div>
+  `;
+
+  // Savings for enterprise
+  const savingsEl = document.getElementById('calcSavings');
+  if (tariff.fixed && drones >= 500) {
+    const premiumCost = 1490 * drones * (calcPeriod === 'year' ? 12 : 1) * (1 - yearDiscount);
+    const saving = premiumCost - (tariff.price * months * (1 - yearDiscount));
+    if (saving > 0) {
+      savingsEl.style.display = 'block';
+      savingsEl.textContent = `💰 Экономия vs Премиум: ${fmt(Math.round(saving))} ₽/${calcPeriod === 'year' ? 'год' : 'мес.'} (${Math.round(saving/premiumCost*100)}%)`;
+    } else {
+      savingsEl.style.display = 'none';
+    }
+  } else {
+    savingsEl.style.display = 'none';
+  }
+}
+
+// ═══════ INIT ═══════
+renderModules();
+renderAddons();
+calculate();
+
+// Smooth nav highlight
+document.querySelectorAll('.nav-link').forEach(link => {
+  link.addEventListener('click', function(e) {
+    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>
